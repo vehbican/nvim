@@ -21,7 +21,6 @@ return {
         -- Lua --
         "lua-language-server",
         "stylua",
-        "selene",
 
         -- Web (HTML / CSS / JS / TS) --
         "html-lsp",
@@ -100,7 +99,6 @@ return {
     config = function()
       local lint = require "lint"
       lint.linters_by_ft = {
-        lua = { "selene" },
         sh = { "shellcheck" },
         yaml = { "yamllint" },
         markdown = { "markdownlint" },
@@ -150,7 +148,7 @@ return {
         { "<leader>w", group = "Workspace", icon = "󰖯" },
         { "<leader>s", group = "Split", icon = "󱂬" },
         { "<leader>r", group = "Replace", icon = "󰑐" },
-        { "<leader>c", group = "Code", icon = "", mode = { "v", "x" } },
+        { "<leader>c", group = "Code", icon = "", mode = { "n", "v", "x" } },
         { "<leader>/", desc = "Comment", icon = "󰅺", mode = { "v", "x" } },
         { "<leader>o", group = "Opencode", icon = "󱚣", mode = { "n", "v", "x" } },
         { "<leader>m", desc = "Format", icon = "󰉼", mode = { "v", "x" } },
