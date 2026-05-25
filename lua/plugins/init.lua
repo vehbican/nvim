@@ -1,7 +1,7 @@
 return {
   {
     "stevearc/conform.nvim",
-    event = "BufWritePre", -- format on save
+    event = { "BufWritePre", "BufNewFile" }, -- format on save
     opts = require "configs.conform",
   },
 
@@ -314,15 +314,48 @@ return {
   {
     "folke/flash.nvim",
     event = "VeryLazy",
-    ---@type Flash.Config
     opts = {},
-    -- stylua: ignore
     keys = {
-      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+      {
+        "s",
+        mode = { "n", "x", "o" },
+        function()
+          require("flash").jump()
+        end,
+        desc = "Flash",
+      },
+      {
+        "S",
+        mode = { "n", "x", "o" },
+        function()
+          require("flash").treesitter()
+        end,
+        desc = "Flash Treesitter",
+      },
+      {
+        "r",
+        mode = "o",
+        function()
+          require("flash").remote()
+        end,
+        desc = "Remote Flash",
+      },
+      {
+        "R",
+        mode = { "o", "x" },
+        function()
+          require("flash").treesitter_search()
+        end,
+        desc = "Treesitter Search",
+      },
+      {
+        "<c-s>",
+        mode = { "c" },
+        function()
+          require("flash").toggle()
+        end,
+        desc = "Toggle Flash Search",
+      },
     },
   },
 
@@ -414,5 +447,33 @@ return {
         },
       }
     end,
+  },
+
+  {
+    "sphamba/smear-cursor.nvim",
+    lazy = false,
+    opts = {
+      smear_between_buffers = false,
+      smear_between_neighbor_lines = true,
+      smear_to_cmd = false,
+
+      min_horizontal_distance_smear = 1,
+      min_vertical_distance_smear = 1,
+
+      smear_insert_mode = true,
+      vertical_bar_cursor_insert_mode = true,
+
+      stiffness = 0.8,
+      trailing_stiffness = 0.7,
+      damping = 0.9,
+      trailing_exponent = 1,
+
+      stiffness_insert_mode = 0.9,
+      trailing_stiffness_insert_mode = 0.9,
+      damping_insert_mode = 0.95,
+
+      never_draw_over_target = true,
+      particles_enabled = false,
+    },
   },
 }
