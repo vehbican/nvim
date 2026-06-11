@@ -58,10 +58,11 @@ end, { desc = "Replace word" })
 -- Buffers
 map("n", "<leader>b", "<cmd> enew <CR>", { desc = "Create buffer" })
 
--- Tree
+-- File explorer
 map("n", "<leader>e", function()
   Snacks.explorer()
 end, { desc = "Explorer" })
+map("n", "<leader>y", "<cmd>Yazi<CR>", { desc = "Yazi" })
 
 -- Comments
 map("n", "<leader>/", "gcc", { desc = "Comment toggle", remap = true })
