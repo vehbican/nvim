@@ -118,15 +118,13 @@ map("n", "]c", "<cmd>Gitsigns nav_hunk next<CR>", { desc = "Next hunk" })
 map("n", "[c", "<cmd>Gitsigns nav_hunk prev<CR>", { desc = "Prev hunk" })
 
 -- Diff
-map("n", "<leader>gd", "<cmd>CodeDiff<CR>", { desc = "Diff explorer" })
-map("n", "<leader>gD", "<cmd>CodeDiff file HEAD<CR>", { desc = "Diff current file" })
-map("n", "<leader>gy", "<cmd>CodeDiff history<CR>", { desc = "Diff history" })
+map("n", "<leader>gd", "<cmd>DiffviewOpen<CR>", { desc = "Diff explorer" })
+map("n", "<leader>gD", "<cmd>DiffviewOpen -- %<CR>", { desc = "Diff current file" })
+map("n", "<leader>gy", "<cmd>DiffviewFileHistory<CR>", { desc = "Diff history" })
+map("n", "<leader>gY", "<cmd>DiffviewFileHistory %<CR>", { desc = "Current file history" })
+map("n", "<leader>gq", "<cmd>DiffviewClose<CR>", { desc = "Close diff" })
 
 map("n", "<leader>x", function()
-  if vim.bo.filetype:match "^codediff" then
-    vim.notify("Use 'q' to close CodeDiff", vim.log.levels.INFO, { title = "CodeDiff" })
-    return
-  end
   require("nvchad.tabufline").close_buffer()
 end, { desc = "Close buffer" })
 

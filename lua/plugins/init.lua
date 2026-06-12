@@ -161,6 +161,8 @@ return {
         { "<leader>gd", desc = "Diff explorer", icon = "" },
         { "<leader>gD", desc = "Diff current file", icon = "" },
         { "<leader>gy", desc = "Diff history", icon = "󰋚" },
+        { "<leader>gY", desc = "Current file history", icon = "󰋚" },
+        { "<leader>gq", desc = "Close diff", icon = "󰅖" },
         { "<leader>ot", desc = "Toggle opencode", icon = "󱚣" },
         { "<leader>os", desc = "Select session", icon = "" },
         { "<leader>oy", desc = "Send selection", icon = "󱚣", mode = { "v", "x" } },
@@ -337,7 +339,7 @@ return {
     "mikavilpas/yazi.nvim",
     cmd = "Yazi",
     opts = {
-      open_for_directories = true,
+      open_for_directories = false,
     },
   },
 
@@ -424,19 +426,20 @@ return {
   },
 
   {
-    "esmuellert/codediff.nvim",
-    cmd = "CodeDiff",
+    "sindrets/diffview.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    cmd = {
+      "DiffviewOpen",
+      "DiffviewFileHistory",
+      "DiffviewClose",
+      "DiffviewToggleFiles",
+      "DiffviewFocusFiles",
+    },
     opts = {
-      diff = {
-        layout = "side-by-side",
-        jump_to_first_change = true,
-        cycle_next_hunk = true,
-      },
-      keymaps = {
-        view = {
-          toggle_explorer = "<Tab>",
-          focus_explorer = "ge",
-        },
+      enhanced_diff_hl = true,
+      view = {
+        default = { layout = "diff2_horizontal" },
+        file_history = { layout = "diff2_horizontal" },
       },
     },
   },
