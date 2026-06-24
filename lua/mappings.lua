@@ -28,8 +28,8 @@ map("n", "q", "<Nop>", { desc = "Disable macro recording" })
 map({ "n", "v", "o" }, "E", "$", { desc = "Go to end of line" })
 map({ "n", "v", "o" }, "B", "^", { desc = "Go to start of line" })
 map("n", "<C-a>", "ggVG", { desc = "Select all" })
-map("v", "m", ">gv", { desc = "Indent right and keep selection" })
-map("v", "n", "<gv", { desc = "Indent left and keep selection" })
+map("v", "n", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
+map("v", "N", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
 
 -- Whichkey mappings
 --
