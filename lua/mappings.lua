@@ -38,6 +38,20 @@ map({ "n", "x" }, "<leader>ca", function()
   require("tiny-code-action").code_action()
 end, { desc = "Code Action" })
 
+vim.api.nvim_create_user_command("Error", function()
+  vim.diagnostic.setqflist {
+    severity = vim.diagnostic.severity.ERROR,
+  }
+  vim.cmd "copen"
+end, {
+  desc = "Show LSP errors in quickfix",
+})
+
+vim.api.nvim_create_user_command("Warning", function()
+  vim.diagnostic.setqflist()
+  vim.cmd "copen"
+end, {})
+
 -- Replace
 map("n", "<leader>rn", function()
   require "nvchad.lsp.renamer"()
