@@ -78,6 +78,12 @@ map("n", "<leader>e", function()
 end, { desc = "Explorer" })
 map("n", "<leader>y", "<cmd>Yazi<CR>", { desc = "Yazi" })
 
+vim.api.nvim_create_user_command("CopyPath", function()
+  local path = vim.fn.fnamemodify(vim.fn.expand "%:p", ":~")
+  vim.fn.setreg("+", path)
+  vim.notify("Copied path: " .. path)
+end, { desc = "Copy current file path" })
+
 -- Comments
 map("n", "<leader>/", "gcc", { desc = "Comment toggle", remap = true })
 map("v", "<leader>/", "gc", { desc = "Comment toggle", remap = true })

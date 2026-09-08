@@ -30,11 +30,5 @@ vim.lsp.config("pyright", {
   },
 })
 
-vim.lsp.config("eslint", {
-  on_attach = function(_, bufnr)
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      buffer = bufnr,
-      command = "EslintFixAll",
-    })
-  end,
-})
+-- Formatting is handled by Conform. ESLint stays available for diagnostics
+-- without running EslintFixAll on projects that do not have an ESLint config.
