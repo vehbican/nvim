@@ -304,19 +304,6 @@ return {
   },
 
   {
-    "nvzone/volt",
-    lazy = true,
-  },
-
-  {
-    "nvzone/floaterm",
-    config = function()
-      require("floaterm").setup()
-    end,
-    lazy = true,
-  },
-
-  {
     "folke/todo-comments.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     lazy = false,

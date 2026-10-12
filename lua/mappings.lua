@@ -182,17 +182,120 @@ map("n", "<leader>ft", function()
   Snacks.picker.todo_comments()
 end, { desc = "Find todo" })
 
--- Terminal
-map({ "n", "t" }, "<A-f>", function()
-  require("floaterm").toggle()
-end, { desc = "Toggle Floaterm" })
+-- Terminal: VS Code-style bottom panel
+local function terminal_window()
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    if vim.bo[buf].buftype == "terminal" then
+      return win
+    end
+  end
+end
 
--- Switch to visual mode in terminal with <vv>
+local function terminal_windows()
+  local windows = {}
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    if vim.bo[buf].buftype == "terminal" then
+      table.insert(windows, win)
+    end
+  end
+  return windows
+end
+
+local function terminal_buffers()
+  local buffers = {}
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buftype == "terminal" then
+      table.insert(buffers, buf)
+    end
+  end
+  return buffers
+end
+
+local function code_window()
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    local filetype = vim.bo[buf].filetype
+    local is_explorer = filetype == "snacks_explorer" or filetype == "NvimTree"
+
+    if vim.bo[buf].buftype == "" and not is_explorer then
+      return win
+    end
+  end
+end
+
+local function focus_code_window()
+  local win = code_window()
+  if win and vim.api.nvim_win_is_valid(win) then
+    vim.api.nvim_set_current_win(win)
+  else
+    -- Preserve the normal window-navigation fallback when no code buffer exists.
+    vim.cmd("wincmd k")
+  end
+end
+
+local function open_terminal()
+  local win = terminal_window()
+  if win and vim.api.nvim_win_is_valid(win) then
+    vim.api.nvim_set_current_win(win)
+    vim.cmd("startinsert")
+    return
+  end
+
+  local buffers = terminal_buffers()
+  vim.cmd("botright 15split")
+  if #buffers > 0 then
+    vim.api.nvim_win_set_buf(0, buffers[1])
+    for index = 2, #buffers do
+      vim.cmd("vsplit")
+      vim.api.nvim_win_set_buf(0, buffers[index])
+    end
+  else
+    vim.cmd("terminal")
+  end
+  vim.cmd("startinsert")
+end
+
+local function new_terminal_vertical()
+  vim.cmd("vsplit")
+  vim.cmd("terminal")
+  vim.cmd("startinsert")
+end
+
+local function toggle_terminal()
+  local windows = terminal_windows()
+  if #windows > 0 then
+    -- Hide every terminal window; buffers and running processes stay alive.
+    for _, win in ipairs(windows) do
+      if vim.api.nvim_win_is_valid(win) then
+        vim.api.nvim_win_hide(win)
+      end
+    end
+    focus_code_window()
+  else
+    open_terminal()
+  end
+end
+
+-- Open/focus the terminal below the current code window.
+map("n", "<C-j>", open_terminal, { desc = "Focus bottom terminal" })
+map({ "n", "t" }, "<A-f>", toggle_terminal, { desc = "Hide/show bottom terminal" })
+map("n", "<leader>tv", new_terminal_vertical, { desc = "New terminal beside current" })
+
+-- Move between the code window and the bottom terminal.
+map("n", "<C-k>", focus_code_window, { desc = "Focus code window" })
+map("t", "<C-k>", function()
+  vim.cmd("stopinsert")
+  focus_code_window()
+end, { desc = "Focus code window" })
+
+-- Leave terminal insert mode with <Esc>.
 vim.api.nvim_create_autocmd("TermOpen", {
   callback = function(args)
     vim.schedule(function()
       if vim.api.nvim_buf_is_valid(args.buf) then
-        vim.keymap.set("t", "vv", [[<C-\><C-n>]], { buffer = args.buf })
+        vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], { buffer = args.buf })
         vim.keymap.set("n", "<Esc>", "i", { buffer = args.buf })
       end
     end)
